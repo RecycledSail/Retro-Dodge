@@ -34,7 +34,12 @@ public class PlayerController : MonoBehaviour
 
     public void Die()
     {
-        //죽으면 게임 오브젝트 비활성화
+        // 죽으면 게임 오브젝트 비활성화
         gameObject.SetActive(false);
+
+        // GameManager 컴포넌트 가져오기
+        GameManager gameManager = FindObjectOfType<GameManager>();
+        // 가져온 GameManager 오브젝트의 EndGame() Method 실행
+        gameManager.EndGame();
     }
 }
