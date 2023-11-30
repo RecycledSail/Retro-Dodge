@@ -4,37 +4,32 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public Rigidbody playerRigidBody; //플레이어 게임오브젝트의 RigidBody 컴포넌트
-    public float speed = 8f; //플레이어 속도
+    // RigidBody public에서 private로 변경하여 안정성
+    private Rigidbody playerRigidBody; // 플레이어 게임오브젝트의 RigidBody 컴포넌트
+    public float speed = 8f; // 플레이어 속도
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerRigidBody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.UpArrow) == true) //위 방향키
-        {
-            playerRigidBody.AddForce(0f, 0f, speed);
-        }
+        // Horizontal, Vertical 입력값 감지
+        float xInput = Input.GetAxis("Horizontal");
+        float zInput = Input.GetAxis("Vertical");
 
-        if (Input.GetKey(KeyCode.DownArrow) == true) //아래 방향키
-        {
-            playerRigidBody.AddForce(0f, 0f, -speed);
-        }
+        // 실제 이동 속도를 입력값 * 이동 속력으로 결정
+        float xSpeed = xInput * speed;
+        float zSpeed = zInput * speed;
 
-        if (Input.GetKey(KeyCode.RightArrow) == true) //오른쪽 방향키
-        {
-            playerRigidBody.AddForce(speed, 0f, 0f);
-        }
+        // Vector3 속도를 (xSpeed, 0, zSpeed)
+        Vector3 newVelocity = new Vector3(xSpeed, 0f, zSpeed);
 
-        if (Input.GetKey(KeyCode.LeftArrow) == true) //왼쪽 방향키
-        {
-            playerRigidBody.AddForce(-speed, 0f, 0f);
-        }
+        // RigidBody.velocity에 newVelocity 할당
+        playerRigidBody.velocity = newVelocity;
     }
 
     public void Die()
